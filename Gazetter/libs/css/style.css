@@ -1,0 +1,154 @@
+.shadow-css {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+.hidden {
+  display: none;
+}
+
+#preloader {
+  background: #f1f2f3 url(/project1/image/preloader.gif) no-repeat center;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  z-index: 10000;
+}
+#action-loader {
+  background: url(/project1/image/action-loader.gif) no-repeat center;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  z-index: 10000;
+}
+
+.navbar {
+  background-color: transparent !important;
+  pointer-events: none !important;
+  z-index: 1000;
+}
+
+#select-option-menu {
+  pointer-events: auto;
+}
+
+#map {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  margin-top: -57px;
+}
+.leaflet-control-zoom {
+  top: 58px;
+}
+.leaflet-control-layers {
+  top: 58px;
+}
+
+.dropdown-toggle {
+  width: 214px;
+}
+
+/*Modal Buttons*/
+
+.button-container {
+  position: absolute;
+  z-index: 900;
+  top: 220px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container-attraction {
+  position: absolute;
+  z-index: 401;
+  top: 70px;
+  left: 40px;
+  width: calc(100vw - 90px);
+}
+
+.carrousel {
+  height: 43px;
+  padding-left: 25px;
+  display: grid;
+  grid-auto-flow: column;
+  scroll-behavior: auto;
+  overflow-y: auto;
+  scrollbar-width: none !important;
+}
+.carrousel::-webkit-scrollbar {
+  display: none;
+}
+.modal-buttons {
+  height: 35px;
+  width: 49px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.icon {
+  height: 20px;
+  margin-bottom: 8px;
+}
+
+.icon-center {
+  margin-right: 100px;
+}
+
+/* Modals */
+
+.close {
+  text-align: right;
+  margin-right: 20px;
+  margin-top: 10px;
+}
+
+#fromCurrencyCode {
+  width: 90px;
+}
+/*Button actions */
+
+.modal-buttons-atraction {
+  height: 20px;
+  background-color: #f8f9fa !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.4) !important;
+  border-radius: 50px !important;
+  margin-top: 5px;
+  width: 100%;
+}
+.attraction-container {
+  display: flex;
+  justify-content: center;
+}
+.attraction-text {
+  color: black;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: -9px;
+}
+.attraction-icon {
+  width: 12px;
+  height: 12px;
+  margin-top: -3.5px;
+  margin-right: 5px;
+}
+/*Modal Info*/
+.country-flag {
+  width: 80px;
+  height: 45px;
+}
+
+.modal-body {
+  max-height: 35vh;
+}
+
+.modal-section {
+  border-bottom: 1px solid #e5e5e5;
+  overflow-x: auto;
+}
+.text-short {
+  overflow: hidden;
+  max-height: 70px;
+}
+#exchange-total {
+  margin-top: -13px;
+}

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gazetteer | Andrei Frandes</title>
+    <meta name="description" content="Project 1, Andrei Frandes" />
+    <meta name="author" content="Andrei Frandes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="image/logo.png" rel="icon" />
+
+    <link href="libs/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="libs/css/leaflet.css" rel="stylesheet" />
+    <link href="libs/css/MarkerCluster.css" rel="stylesheet" />
+    <link href="libs/css/MarkerCluster.Default.css" rel="stylesheet" />
+    <link href="libs/css/style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="preloader"></div>
+    <div id="action-loader" class="hidden"></div>
+    <p class="hidden currencyCodeShort"></p>
+    <nav class="navbar">
+      <div class="container">
+        <div class="mx-auto">
+          <select id="select-option-menu" class="form-select">
+            <option selected>Select a country</option>
+          </select>
+        </div>
+      </div>
+    </nav>
+    <!--Buttons-->
+
+    <div class="button-container">
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Explore selected country details"
+      >
+        <button
+          type="button"
+          class="btn btn-dark modal-buttons shadow-css"
+          data-bs-toggle="modal"
+          data-bs-target="#infoModal"
+          id="info-button"
+        >
+          <img class="icon" src="./image/info.png" alt="info" />
+        </button>
+      </span>
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Explore time zone details for your marker position"
+      >
+        <button
+          type="button"
+          class="btn btn-dark modal-buttons shadow-css"
+          data-bs-toggle="modal"
+          data-bs-target="#timezoneModal"
+          id="timezone-button"
+        >
+          <img class="icon" src="./image/clock.png" alt="clock" />
+        </button>
+      </span>
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Access detailed weather forecast for your marker location"
+      >
+        <button
+          type="button"
+          class="btn btn-dark modal-buttons shadow-css"
+          data-bs-toggle="modal"
+          data-bs-target="#weatherModal"
+          id="weather-button"
+        >
+          <img class="icon" src="./image/weather.png" alt="weather" />
+        </button>
+      </span>
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Discover the largest cities by population in the selected country"
+      >
+        <button
+          type="button"
+          class="btn btn-dark modal-buttons shadow-css"
+          data-bs-toggle="modal"
+          data-bs-target="#citiesModal"
+          id="cities-button"
+        >
+          <img class="icon icon-center" src="./image/city.png" alt="city" />
+        </button>
+      </span>
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="View all national holidays in the selected country"
+      >
+        <button
+          type="button"
+          class="btn btn-dark modal-buttons shadow-css"
+          data-bs-toggle="modal"
+          data-bs-target="#holidayModal"
+          id="holiday-button"
+        >
+          <img class="icon" src="./image/calendar.png" alt="calendar" />
+        </button>
+      </span>
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Calculate and convert currencies"
+      >
+        <button
+          type="button"
+          class="btn btn-dark modal-buttons shadow-css"
+          data-bs-toggle="modal"
+          data-bs-target="#exchangeModal"
+          id="exchange-button"
+        >
+          <img
+            class="icon icon-center"
+            src="./image/exchange1.png"
+            alt="wiki"
+          />
+        </button>
+      </span>
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Discover top Wikipedia results within a 10 km radius of your marker location"
+      >
+        <button
+          type="button"
+          class="btn btn-dark modal-buttons shadow-css"
+          data-bs-toggle="modal"
+          data-bs-target="#wikipediaModal"
+          id="wikipedia-button"
+        >
+          <img class="icon icon-center" src="./image/wiki.png" alt="wiki" />
+        </button>
+      </span>
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Retrieve detailed location information for the marker position"
+      >
+        <button
+          type="button"
+          class="btn btn-dark modal-buttons shadow-css"
+          data-bs-toggle="modal"
+          data-bs-target="#locationModal"
+          id="location-button"
+        >
+          <img class="icon" src="./image/location.png" alt="location" />
+        </button>
+      </span>
+    </div>
+    <!--Attraction Buttons-->
+    <div class="button-container-attraction">
+      <div class="carrousel">
+        <span
+          class="me-2"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          title="Search for Restaurants within 20km of Marker Location"
+        >
+          <button
+            type="button"
+            class="btn modal-buttons-atraction"
+            id="restaurants-button"
+          >
+            <div class="attraction-container">
+              <img
+                class="attraction-icon"
+                src="./image/attraction-icon/restaurant.png"
+                alt="restaurant"
+              />
+              <p class="attraction-text">Restaurants</p>
+            </div>
+          </button>
+        </span>
+        <span
+          class="me-2"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          title="Search for Bars within 20km of Marker Location"
+        >
+          <button
+            type="button"
+            class="btn modal-buttons-atraction"
+            id="bar-button"
+          >
+            <div class="attraction-container">
+              <img
+                class="attraction-icon"
+                src="./image/attraction-icon/cocktail.png"
+                alt="bar"
+              />
+              <p class="attraction-text">Bars</p>
+            </div>
+          </button>
+        </span>
+        <span
+          class="me-2"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          title="Search for Gas Stations within 20km of Marker Location"
+        >
+          <button
+            type="button"
+            class="btn modal-buttons-atraction"
+            id="gas-button"
+          >
+            <div class="attraction-container">
+              <img
+                class="attraction-icon"
+                src="./image/attraction-icon/gas.png"
+                alt="gas station"
+              />
+              <p class="attraction-text">Gas</p>
+            </div>
+          </button>
+        </span>
+        <span
+          class="me-2"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          title="Search for Cafes within 20km of Marker Location"
+        >
+          <button
+            type="button"
+            class="btn modal-buttons-atraction"
+            id="coffee-button"
+          >
+            <div class="attraction-container">
+              <img
+                class="attraction-icon"
+                src="./image/attraction-icon/coffee.png"
+                alt="coffee"
+              />
+              <p class="attraction-text">Coffee</p>
+            </div>
+          </button>
+        </span>
+        <span
+          class="me-2"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          title="Search for Hotels within 20km of Marker Location"
+        >
+          <button
+            type="button"
+            class="btn modal-buttons-atraction"
+            id="hotel-button"
+          >
+            <div class="attraction-container">
+              <img
+                class="attraction-icon"
+                src="./image/attraction-icon/hotel.png"
+                alt="hotel"
+              />
+              <p class="attraction-text">Hotels</p>
+            </div>
+          </button>
+        </span>
+        <span
+          class="me-2"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          title="Search for Museums within 20km of Marker Location"
+        >
+          <button
+            type="button"
+            class="btn modal-buttons-atraction"
+            id="museum-button"
+          >
+            <div class="attraction-container">
+              <img
+                class="attraction-icon"
+                src="./image/attraction-icon/museum.png"
+                alt="museum"
+              />
+              <p class="attraction-text">Museums</p>
+            </div>
+          </button>
+        </span>
+        <span
+          class="me-2"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          title="Search for Parks within 20km of Marker Location"
+        >
+          <button
+            type="button"
+            class="btn modal-buttons-atraction"
+            id="park-button"
+          >
+            <div class="attraction-container">
+              <img
+                class="attraction-icon"
+                src="./image/attraction-icon//park.png"
+                alt="park"
+              />
+              <p class="attraction-text">Parks</p>
+            </div>
+          </button>
+        </span>
+        <span
+          class="me-2"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          title="Search for Hospitals within 20km of Marker Location"
+        >
+          <button
+            type="button"
+            class="btn modal-buttons-atraction"
+            id="hospital-button"
+          >
+            <div class="attraction-container">
+              <img
+                class="attraction-icon"
+                src="./image/attraction-icon/hospital.png"
+                alt="hospital"
+              />
+              <p class="attraction-text">Hospitals</p>
+            </div>
+          </button>
+        </span>
+      </div>
+    </div>
+    <!--Modals-->
+
+    <!--Info modal-->
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="country ms-2">Country</h1>
+            <img class="country-flag shadow-css" alt="Country flag" />
+          </div>
+          <div class="modal-body bg-light">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>Capital city:</td>
+                  <td id="capital-city">N/S</td>
+                </tr>
+                <tr>
+                  <td>Continent:</td>
+                  <td id="modal-continent">N/S</td>
+                </tr>
+                <tr>
+                  <td>Languages:</td>
+                  <td id="modal-languages">N/S</td>
+                </tr>
+                <tr>
+                  <td>Currency:</td>
+                  <td id="modal-currency">N/S</td>
+                </tr>
+                <tr>
+                  <td>Population:</td>
+                  <td id="modal-population">N/S</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Timezone Modal-->
+    <div class="modal fade" id="timezoneModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h1 class="ms-2">Time Zone</h1>
+              <p class="text-muted ms-3 modal-address">Location:</p>
+            </div>
+          </div>
+          <div class="modal-body bg-light">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>Current date and time:</td>
+                  <td id="modal-date-time">N/S</td>
+                </tr>
+                <tr>
+                  <td>Time zone name:</td>
+                  <td id="modal-timezone-id">N/S</td>
+                </tr>
+                <tr>
+                  <td>Time zone offset:</td>
+                  <td id="modal-timezone-offset">N/S</td>
+                </tr>
+                <tr>
+                  <td>Sunrise:</td>
+                  <td id="modal-sunrise">N/S</td>
+                </tr>
+                <tr>
+                  <td>Sunset:</td>
+                  <td id="modal-sunset">N/S</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Weather Modal-->
+    <div class="modal fade" id="weatherModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h1 class="ms-2">Local weather</h1>
+              <p class="text-muted ms-3 modal-address">Location:</p>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div
+              class="d-flex text-center mb-4 pb-3 pt-2 modal-section hourly-weather"
+            >
+              <!--JQuery Hourly Append -->
+            </div>
+          </div>
+
+          <div
+            class="d-flex justify-content-around text-center mb-4 pb-3 pt-2 daily-weather"
+          >
+            <!--JQuery Daily Append -->
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Largest Cities Modal-->
+    <div class="modal fade" id="citiesModal" tabindex="-1" role="dialog">
+      <div
+        class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="ms-2">
+              Largest cities of <br /><strong class="country"></strong>
+            </h1>
+            <img class="country-flag shadow-css" alt="Country flag" />
+          </div>
+          <div class="modal-body bg-light">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Population</th>
+                </tr>
+              </thead>
+              <tbody id="cities-body">
+                <!--JQuery Cities Append -->
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Holiday Modal-->
+    <div class="modal fade" id="holidayModal" tabindex="-1" role="dialog">
+      <div
+        class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="ms-2">National Holidays<br />2023</h1>
+            <img class="country-flag shadow-css" scr="" alt="Country flag" />
+          </div>
+          <div class="modal-body modal-body-holiday bg-light">
+            <table class="table">
+              <tbody id="holiday-body">
+                <!--JQuery Holidays Append -->
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Exchange modal-->
+    <div class="modal fade" id="exchangeModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="ms-2">Currency Exchange</h1>
+          </div>
+          <div class="modal-body modal-body-holiday bg-light">
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                aria-label="Text input with dropdown button"
+                id="fromCurrency"
+                max="11"
+                value="1"
+              />
+              <div class="input-group-append">
+                <span class="input-group-text" id="fromCurrencyCode">N/S</span>
+              </div>
+            </div>
+            <h3 class="text-center text-secondary">&#8595;</h3>
+            <div class="input-group modal-section">
+              <input
+                type="text"
+                class="form-control"
+                id="toCurrency"
+                aria-label="Text input with dropdown button"
+                maxlength="10"
+              />
+              <div class="input-group-append">
+                <select
+                  class="form-select"
+                  id="currencyTo"
+                  aria-label="Default select example"
+                >
+                  <option selected value="USD">USD</option>
+                </select>
+              </div>
+            </div>
+            <p class="text-secondary mt-2 ms-1">
+              <span id="currencySymbol">$</span>
+              <span id="updateFromAmount">1</span> is equal to
+            </p>
+            <h2 class="ms-1" id="exchange-total">USD</h2>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Wikipedia modal-->
+    <div class="modal fade" id="wikipediaModal" tabindex="-1" role="dialog">
+      <div
+        class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h1 class="ms-2">Nearby wikipedia results</h1>
+              <p class="text-muted ms-3 modal-address">Location:</p>
+            </div>
+          </div>
+          <div class="modal-body modal-body-holiday bg-light">
+            <table class="table">
+              <tbody id="wikipedia-body">
+                <!--JQuery Wikipedia Append -->
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Precise location modal-->
+    <div class="modal fade" id="locationModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="ms-2">Precise Location</h1>
+          </div>
+          <div class="modal-body bg-light">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td class="col-4">Address:</td>
+                  <td id="address">N/S</td>
+                </tr>
+                <tr>
+                  <td class="col-4">Latitude:</td>
+                  <td id="lat">N/S</td>
+                </tr>
+                <tr>
+                  <td class="col-4">Longitude:</td>
+                  <td id="lng">N/S</td>
+                </tr>
+                <tr>
+                  <td class="col-4">Country code:</td>
+                  <td id="country-code">N/S</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="map"></div>
+    <!--Scripts-->
+    <script src="libs/js/leaflet.js"></script>
+    <script
+      type="application/javascript"
+      src="libs/js/jquery-2.2.3.min.js"
+    ></script>
+
+    <script
+      type="application/javascript"
+      src="libs/js/bootstrap.min.js"
+    ></script>
+    <script
+      type="application/javascript"
+      src="libs/js/bootstrap.bundle.min.js"
+    ></script>
+
+    <script
+      type="application/javascript"
+      src="libs/js/leaflet.markercluster.js"
+    ></script>
+    <script type="application/javascript" src="libs/js/tooltip.js"></script>
+    <script type="application/javascript" src="libs/js/script.js"></script>
+    <!--End Scripts-->
+  </body>
+</html>
